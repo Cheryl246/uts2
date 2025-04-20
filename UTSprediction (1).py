@@ -72,7 +72,7 @@ def main():
     lead_time = st.number_input("Lead time (in days)", 0, 365)
     arrival_year = st.number_input("Arrival year", 2016, 2020)
     arrival_month = st.selectbox("Arrival month", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-    arrival_date = st.date_input("Arrival date")
+    arrival_date = st.number_input("Arrival date"0,31)
     market_segment_type = st.radio("Market segment type", ["Online", "Corporate", "Complementary", "Offline","Aviation"])
     repeated_guest = st.radio("Repeated guest", [0, 1])
     no_of_previous_cancellations = st.number_input("Number of previous cancellations", 0, 30)
