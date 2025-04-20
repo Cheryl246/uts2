@@ -10,9 +10,8 @@ meal_plan = joblib.load('meal_plan.pkl')
 room_type = joblib.load('room_type.pkl')
 market_segment = joblib.load('market_segment (2).pkl')
 
-# Preprocess data function to handle missing and infinite values
+# Preprocess data function to handle missing values
 def preprocess_data(data):
-    # Convert the input data to a pandas DataFrame
     df = pd.DataFrame([list(data.values())], columns=[
         'Booking ID', 'Number of adults', 'Number of children', 
         'Number of weekend nights', 'Number of week nights', 'Type of meal plan', 
@@ -32,26 +31,17 @@ def preprocess_data(data):
 
     # Handle missing values: replace empty strings with NaN, and then fill NaN with the median of each column
     df.replace('', np.nan, inplace=True)
+    df.fillna(df.median(), inplace=True)  # Fill NaN values with median
     
-    # Fill missing values in numeric columns with median
-    numeric_cols = df.select_dtypes(include=[np.number]).columns  # Select only numeric columns
-    df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
-
     # Ensure all columns that need to be numeric are converted to float
     df = df.apply(pd.to_numeric, errors='coerce')  # Convert any non-numeric data to NaN and then handle it
-
+    
     # Handle any NaN values again (if any NaNs remain after coercion, fill them with median)
     df.fillna(df.median(), inplace=True)
-
+    
     # Handle infinite values (if any)
     df.replace([np.inf, -np.inf], np.nan, inplace=True)  # Replace infinity with NaN
     df.fillna(df.median(), inplace=True)  # Fill NaN values again with the median
-
-    # Check if any NaN or infinite values are left
-    if df.isnull().values.any() or np.isinf(df).values.any():
-        print("Data contains NaN or infinite values. Debugging:")
-        print(df[df.isnull().any(axis=1)])  # Print rows with NaN values
-        print(df[np.isinf(df).any(axis=1)])  # Print rows with infinite values
 
     return df
 
