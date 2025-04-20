@@ -79,7 +79,7 @@ def main():
 
     if st.button('Make Prediction'):
         features=df      
-        result = make_prediction(features)
+        result = make_prediction(df)
         st.success(f'The prediction is: {result}')
 
 def make_prediction(features):
