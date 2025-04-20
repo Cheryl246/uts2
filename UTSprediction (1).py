@@ -15,7 +15,7 @@ import joblib
 
 
 # Load the machine learning model and encode
-model = joblib.load('Ranfor_train1.pkl')
+model = joblib.load('Ranfor_train1 (1).pkl')
 target_encoded= joblib.load('target_encoded.pkl')
 meal_plan=joblib.load('meal_plan.pkl')
 room_type=joblib.load('room_type.pkl')
