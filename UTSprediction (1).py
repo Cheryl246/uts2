@@ -28,6 +28,7 @@ def preprocess_data(data):
     
     # One-hot encode 'Market segment type' column manually using pd.get_dummies
     df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
+    df.drop(['Booking ID'], axis=1, inplace=True)
 
     # Handle missing values: replace empty strings with NaN, and then fill NaN with the median of each column
     df.replace('', np.nan, inplace=True)
