@@ -27,7 +27,7 @@ model = joblib.load('Ranfor_train.pkl')
 target_encoded= joblib.load('target_encoded.pkl')
 meal_plan=joblib.load('meal_plan.pkl')
 room_type=joblib.load('room_type.pkl')
-market_segment=joblib.load('market_segment.pkl')
+market_segment=joblib.load('market_segment (2).pkl')
 
 
 # In[3]:
