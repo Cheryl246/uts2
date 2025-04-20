@@ -78,7 +78,7 @@ def main():
     repeated_guest = st.radio("Repeated guest", [0, 1])
     no_of_previous_cancellations = st.number_input("Number of previous cancellations", 0, 30)
     no_of_previous_bookings_not_canceled = st.number_input("Number of previous bookings not canceled", 0, 30)
-    avg_price_per_room = st.text_input("Average price per room (in Euros)")
+    avg_price_per_room = st.number_input("Average price per room (in Euros)",0.0, 1000.0)
     no_of_special_requests = st.number_input("Number of special requests", 0, 10)
 
     # Collect data into a dictionary
