@@ -47,6 +47,12 @@ def preprocess_data(data):
     df.replace([np.inf, -np.inf], np.nan, inplace=True)  # Replace infinity with NaN
     df.fillna(df.median(), inplace=True)  # Fill NaN values again with the median
 
+    # Check if any NaN or infinite values are left
+    if df.isnull().values.any() or np.isinf(df).values.any():
+        print("Data contains NaN or infinite values. Debugging:")
+        print(df[df.isnull().any(axis=1)])  # Print rows with NaN values
+        print(df[np.isinf(df).any(axis=1)])  # Print rows with infinite values
+
     return df
 
 # Function to make predictions using the pre-trained model
