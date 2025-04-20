@@ -3,14 +3,12 @@ import numpy as np
 import joblib
 import streamlit as st
 
-# Load the machine learning model and encoders
 model = joblib.load('Ranfor_train1 (1).pkl')
 target_encoded = joblib.load('target_encoded.pkl')
 meal_plan = joblib.load('meal_plan.pkl')
 room_type = joblib.load('room_type.pkl')
 market_segment = joblib.load('market_segment (2).pkl')
 
-# Preprocess data function to handle missing values
 def preprocess_data(data):
     df = pd.DataFrame([list(data.values())], columns=[
         'Booking ID', 'Number of adults', 'Number of children', 
@@ -22,17 +20,12 @@ def preprocess_data(data):
         'Number of special requests'
     ])
     
-    # Replace categorical values with encoded values
     df = df.replace(meal_plan)
     df = df.replace(room_type)
-    
-    # One-hot encode 'Market segment type' column manually using pd.get_dummies
     df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
     df.drop(['Booking ID'], axis=1, inplace=True)
-
-    # Handle missing values: replace empty strings with NaN, and then fill NaN with the median of each column
     df.replace('', np.nan, inplace=True)
-    df.fillna(df.median(), inplace=True)  # Fill NaN values with median
+    df.fillna(df.median(), inplace=True)  
     
     # Ensure all columns that need to be numeric are converted to float
     df = df.apply(pd.to_numeric, errors='coerce')  # Convert any non-numeric data to NaN and then handle it
@@ -46,20 +39,15 @@ def preprocess_data(data):
 
     return df
 
-# Function to make predictions using the pre-trained model
 def make_prediction(features):
-    # Make sure the input is a numpy array and reshape it for prediction
     input_array = np.array(features).reshape(1, -1)
 
-    # Check for any NaN or infinite values before passing to the model
     if np.any(np.isnan(input_array)) or np.any(np.isinf(input_array)):
         raise ValueError("Input contains NaN or infinite values.")
 
-    # Make prediction using the trained model
     prediction = model.predict(input_array)
     return prediction[0]
 
-# Streamlit user interface and prediction function
 def main():
     st.title('Hotel Reservation Prediction')
     Booking_ID = st.text_input("Booking_ID")
@@ -81,7 +69,6 @@ def main():
     avg_price_per_room = st.number_input("Average price per room (in Euros)",0.0, 1000.0)
     no_of_special_requests = st.number_input("Number of special requests", 0, 10)
 
-    # Collect data into a dictionary
     data = {
         'Booking ID': Booking_ID,
         'Number of adults': no_of_adults,
@@ -102,7 +89,6 @@ def main():
         'Average price per room': avg_price_per_room,
         'Number of special requests': no_of_special_requests }
 
-    # Convert the dictionary to a DataFrame
     df = pd.DataFrame([list(data.values())], columns=['Booking ID', 'Number of adults', 'Number of children', 'Number of weekend nights', 
                                                   'Number of week nights', 'Type of meal plan', 'Required car parking space', 
                                                   'Room type reserved', 'Lead time', 'Arrival year', 'Arrival month', 'Arrival date', 
