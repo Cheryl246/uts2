@@ -75,12 +75,7 @@ def main():
                                                   'Number of special requests'])
     df = df.replace(meal_plan)
     df = df.replace(room_type)
-    encoder = OneHotEncoder(sparse=False, drop='first')  # sparse=False to get an array instead of a sparse matrix
-    market_enc = df[['Market segment type']]  # Extract the 'Market segment type' column
-    market_enc_encoded = encoder.fit_transform(market_enc)
-    market_enc_df = pd.DataFrame(market_enc_encoded, columns=encoder.get_feature_names_out())
-    df=pd.concat([df,market_enc_df], axis=1)
-    df=df.drop(['Market segment type'],axis=1)
+    df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
 
     if st.button('Make Prediction'):
         features=df      
