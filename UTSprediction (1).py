@@ -27,13 +27,20 @@ def preprocess_data(data):
     df = df.replace(meal_plan)
     df = df.replace(room_type)
     
-    # One-hot encode 'Market segment type' column manually using pd.get_dummies
-    df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
+    # Handle missing values: replace empty strings with NaN, and then fill NaN with the median of each column
     df.replace('', np.nan, inplace=True)
-    df.fillna(df.median(), inplace=True)  
+
+    # Fill missing values in numeric columns with median
+    numeric_cols = df.select_dtypes(include=[np.number]).columns  # Select only numeric columns
+    df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
+
+    # Ensure all columns that need to be numeric are converted to float
+    df = df.apply(pd.to_numeric, errors='coerce')  # Convert any non-numeric data to NaN and then handle it
+
+    # Handle any NaN values again (if any NaNs remain after coercion, fill them with median)
+    df.fillna(df.median(), inplace=True)
 
     return df
-
 
 # Function to make a prediction
 def make_prediction(features):
