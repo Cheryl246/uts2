@@ -25,7 +25,7 @@ import gzip
 # Load the machine learning model and encode
 model = joblib.load('Ranfor_train.pkl')
 target_encoded= joblib.load('target_encoded.pkl')
-meal_plane=joblib.load('meal_plan.pkl')
+meal_plan=joblib.load('meal_plan.pkl')
 room_type=joblib.load('room_type.pkl')
 market_segment=joblib.load('market_segment.pkl')
 
@@ -83,8 +83,8 @@ class ModelPreprocessing:
     def BinaryEncoding(self,columns):
         for column in columns:
             if column == 'type_of_meal_plan':
-                self.x_train[column] = self.x_train[column].replace(meal_plane)
-                self.x_test[column] = self.x_test[column].replace(meal_plane)
+                self.x_train[column] = self.x_train[column].replace(meal_plan)
+                self.x_test[column] = self.x_test[column].replace(meal_plan)
             elif column == 'room_type_reserved':
                 self.x_train[column] = self.x_train[column].replace(room_type)
                 self.x_test[column] = self.x_test[column].replace(room_type)
