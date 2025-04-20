@@ -29,6 +29,8 @@ def preprocess_data(data):
     
     # One-hot encode 'Market segment type' column manually using pd.get_dummies
     df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
+    df.replace('', np.nan, inplace=True)
+    df.fillna(df.median(), inplace=True)  
 
     return df
 
