@@ -58,8 +58,8 @@ def main():
         result = make_prediction(df)
         st.success(f'The prediction is: {result}')
         
-def make_prediction(features):
-    input_array = np.array(features).reshape(1, -1)
+def make_prediction(df):
+    input_array = np.array(df).reshape(1, -1)
     return model.predict(input_array)[0]
 
 if __name__ == '__main__':
