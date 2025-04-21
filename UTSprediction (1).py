@@ -10,30 +10,6 @@ meal_plan = joblib.load('meal_plan.pkl')
 room_type = joblib.load('room_type.pkl')
 market_segment = joblib.load('market_segment (2).pkl')
 
-def preprocess_data(data):
-    df = pd.DataFrame([data], columns=['Booking ID', 'Number of adults', 'Number of children', 
-                                       'Number of weekend nights', 'Number of week nights', 'Type of meal plan', 
-                                       'Required car parking space', 'Room type reserved', 'Lead time', 
-                                       'Arrival year', 'Arrival month', 'Arrival date', 'Market segment type', 
-                                       'Repeated guest', 'Number of previous cancellations', 
-                                       'Number of previous bookings not canceled', 'Average price per room', 
-                                       'Number of special requests'])
-
-    df = df.replace(meal_plan)
-    df = df.replace(room_type)
-    df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
-    
-    df.drop(['Booking ID'], axis=1, inplace=True)
-    df.replace('', np.nan, inplace=True)
-    df.fillna(df.median(), inplace=True)
-
-    df = df.apply(pd.to_numeric, errors='coerce')
-    df.fillna(df.median(), inplace=True)
-    df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    df.fillna(df.median(), inplace=True)
-    
-    return df
-
 def main():
     st.title('Hotel Reservation Prediction')
 
@@ -57,8 +33,26 @@ def main():
         'Average price per room': st.number_input("Average price per room (in Euros)", 0.0, 1000.0),
         'Number of special requests': st.number_input("Number of special requests", 0, 10)
     }
+    df = pd.DataFrame([data], columns=['Booking ID', 'Number of adults', 'Number of children', 
+                                       'Number of weekend nights', 'Number of week nights', 'Type of meal plan', 
+                                       'Required car parking space', 'Room type reserved', 'Lead time', 
+                                       'Arrival year', 'Arrival month', 'Arrival date', 'Market segment type', 
+                                       'Repeated guest', 'Number of previous cancellations', 
+                                       'Number of previous bookings not canceled', 'Average price per room', 
+                                       'Number of special requests'])
 
-    df = preprocess_data(data)
+    df = df.replace(meal_plan)
+    df = df.replace(room_type)
+    df = pd.get_dummies(df, columns=['Market segment type'], drop_first=True)
+    
+    df.drop(['Booking ID'], axis=1, inplace=True)
+    df.replace('', np.nan, inplace=True)
+    df.fillna(df.median(), inplace=True)
+
+    df = df.apply(pd.to_numeric, errors='coerce')
+    df.fillna(df.median(), inplace=True)
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df.fillna(df.median(), inplace=True)
 
     if st.button('Make Prediction'):
         result = make_prediction(df)
