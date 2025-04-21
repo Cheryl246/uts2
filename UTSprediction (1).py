@@ -34,12 +34,6 @@ def preprocess_data(data):
     
     return df
 
-def make_prediction(features):
-    input_array = np.array(features).reshape(1, -1)
-    if np.any(np.isnan(input_array)) or np.any(np.isinf(input_array)):
-        raise ValueError("Input contains NaN or infinite values.")
-    return model.predict(input_array)[0]
-
 def main():
     st.title('Hotel Reservation Prediction')
 
@@ -69,6 +63,12 @@ def main():
     if st.button('Make Prediction'):
         result = make_prediction(df)
         st.success(f'The prediction is: {result}')
+        
+def make_prediction(features):
+    input_array = np.array(features).reshape(1, -1)
+    if np.any(np.isnan(input_array)) or np.any(np.isinf(input_array)):
+        raise ValueError("Input contains NaN or infinite values.")
+    return model.predict(input_array)[0]
 
 if __name__ == '__main__':
     main()
