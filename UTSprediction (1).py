@@ -39,8 +39,8 @@ def main():
 
     data = {
         'Booking ID': st.text_input("Booking_ID"),
-        'Number of adults': st.selectbox("Adults", options=range(1, 11)),
-        'Number of children': st.selectbox("Children, under 17", options=range(1, 11)),
+        'Number of adults': st.selectbox("Adults", options=range(0, 11)),
+        'Number of children': st.selectbox("Children, under 17", options=range(0, 11)),
         'Number of weekend nights': st.number_input("Weekend Nights", 0, 8),
         'Number of week nights': st.number_input("Week Nights (Mon to Fri)", 0, 7),
         'Type of meal plan': st.selectbox("Type of meal plan", ["Meal Plan 1", "Meal Plan 2", "Meal Plan 3", "Not Selected"]),
@@ -66,8 +66,6 @@ def main():
         
 def make_prediction(features):
     input_array = np.array(features).reshape(1, -1)
-    if np.any(np.isnan(input_array)) or np.any(np.isinf(input_array)):
-        raise ValueError("Input contains NaN or infinite values.")
     return model.predict(input_array)[0]
 
 if __name__ == '__main__':
